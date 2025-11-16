@@ -4,91 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>English Learning Hub</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Comic Sans MS', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 600px;
-            background: white;
-            border-radius: 20px;
-            padding: 50px 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            text-align: center;
-        }
-
-        h1 {
-            color: #667eea;
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
-
-        .subtitle {
-            color: #666;
-            font-size: 1.3em;
-            margin-bottom: 50px;
-        }
-
-        .menu {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .menu-item {
-            display: block;
-            padding: 25px 30px;
-            font-size: 1.5em;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 15px;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .menu-item:hover {
-            background: #764ba2;
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(118, 75, 162, 0.4);
-        }
-
-        .menu-item:active {
-            transform: translateY(-2px);
-        }
-
-        .icon {
-            font-size: 1.2em;
-            margin-right: 10px;
-        }
-
-        .description {
-            display: block;
-            font-size: 0.6em;
-            font-weight: normal;
-            margin-top: 8px;
-            opacity: 0.9;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <div class="container">
-        <h1>📚 English Learning</h1>
-        <p class="subtitle">Choose what you want to practice!</p>
+<body class="centered">
+    <div class="container small">
+        <h1 class="large">📚 English Learning</h1>
+        <p class="subtitle large">Choose what you want to practice!</p>
         
         <div class="menu">
             <a href="words.html" class="menu-item">
