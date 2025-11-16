@@ -1,0 +1,191 @@
+let data = JSON.parse(localStorage.getItem('englishWordsData')) || { lists: [] };
+
+function saveData() {
+    localStorage.setItem('englishWordsData', JSON.stringify(data));
+}
+
+function createList() {
+    const input = document.getElementById('newListInput');
+    const title = input.value.trim();
+    
+    if (title) {
+        data.lists.push({
+            id: Date.now(),
+            title: title,
+            words: [],
+            collapsed: false
+        });
+        saveData();
+        input.value = '';
+        render();
+    }
+}
+
+function deleteList(listId) {
+    if (confirm('Are you sure you want to delete this list?')) {
+        data.lists = data.lists.filter(list => list.id !== listId);
+        saveData();
+        render();
+    }
+}
+
+function toggleList(listId) {
+    const list = data.lists.find(l => l.id === listId);
+    if (list) {
+        list.collapsed = !list.collapsed;
+        saveData();
+        render();
+    }
+}
+
+function addWord() {
+    const listSelect = document.getElementById('listSelect');
+    const wordInput = document.getElementById('wordInput');
+    const meaningInput = document.getElementById('meaningInput');
+    const listId = parseInt(listSelect.value);
+    const word = wordInput.value.trim();
+    const meaning = meaningInput.value.trim();
+    
+    if (!listId) {
+        alert('Please select a list first!');
+        return;
+    }
+    
+    if (word && meaning) {
+        const list = data.lists.find(l => l.id === listId);
+        if (list) {
+            list.words.unshift({ word, meaning });
+            saveData();
+            wordInput.value = '';
+            meaningInput.value = '';
+            render();
+            wordInput.focus();
+        }
+    }
+}
+
+function deleteWord(listId, wordIndex) {
+    const list = data.lists.find(l => l.id === listId);
+    if (list) {
+        list.words.splice(wordIndex, 1);
+        saveData();
+        render();
+    }
+}
+
+function renderListSelect() {
+    const select = document.getElementById('listSelect');
+    const currentValue = select.value;
+    
+    select.innerHTML = '<option value="">Select a list...</option>' +
+        data.lists.map(list => 
+            `<option value="${list.id}">${list.title}</option>`
+        ).join('');
+    
+    if (currentValue) {
+        select.value = currentValue;
+    }
+}
+
+function render() {
+    renderListSelect();
+    
+    const container = document.getElementById('listsContainer');
+    
+    if (data.lists.length === 0) {
+        container.innerHTML = '<div class="empty-state">No lists yet! Create your first list above.</div>';
+        return;
+    }
+    
+    container.innerHTML = data.lists.map(list => {
+        const wordsHtml = list.words.length === 0 
+            ? '<div class="empty-state">No words in this list yet.</div>'
+            : `<ul class="words-list">
+                ${list.words.map((item, index) => `
+                    <li class="word-item">
+                        <div class="word-content">
+                            <div class="word-text">${item.word}</div>
+                            <div class="word-meaning">${item.meaning}</div>
+                        </div>
+                        <button class="delete-btn" onclick="deleteWord(${list.id}, ${index})">Delete</button>
+                    </li>
+                `).join('')}
+            </ul>`;
+        
+        return `
+            <div>
+                <div class="list-header" onclick="toggleList(${list.id})">
+                    <div class="list-title">${list.title}</div>
+                    <div class="list-controls">
+                        <span class="list-count">${list.words.length} words</span>
+                        <button class="delete-list-btn" onclick="event.stopPropagation(); deleteList(${list.id})">Delete List</button>
+                        <span class="toggle-icon ${list.collapsed ? 'collapsed' : ''}">▼</span>
+                    </div>
+                </div>
+                <div class="list-content ${list.collapsed ? 'collapsed' : ''}">
+                    ${wordsHtml}
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+document.getElementById('newListInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        createList();
+    }
+});
+
+document.getElementById('wordInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        document.getElementById('meaningInput').focus();
+    }
+});
+
+document.getElementById('meaningInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        addWord();
+    }
+});
+
+function exportData() {
+    const dataStr = JSON.stringify(data, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const date = new Date().toISOString().split('T')[0];
+    a.href = url;
+    a.download = `english-words-backup-${date}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            if (importedData.lists && Array.isArray(importedData.lists)) {
+                if (confirm('This will replace all your current lists. Continue?')) {
+                    data = importedData;
+                    saveData();
+                    render();
+                    alert('Data imported successfully!');
+                }
+            } else {
+                alert('Invalid backup file format!');
+            }
+        } catch (error) {
+            alert('Error reading backup file!');
+        }
+    };
+    reader.readAsText(file);
+    event.target.value = '';
+}
+
+render();
