@@ -461,6 +461,14 @@
             saveData();
         }
 
+        // Clear all user answers on page load
+        data.lists.forEach(list => {
+            list.sentences.forEach(sentence => {
+                sentence.userAnswer = '';
+                sentence.revealed = false;
+            });
+        });
+
         function saveData() {
             localStorage.setItem('sentencesData', JSON.stringify(data));
         }
@@ -716,6 +724,13 @@
                     if (importedData.lists && Array.isArray(importedData.lists)) {
                         if (confirm('This will replace all your current lists. Continue?')) {
                             data = importedData;
+                            // Clear all user answers on import
+                            data.lists.forEach(list => {
+                                list.sentences.forEach(sentence => {
+                                    sentence.userAnswer = '';
+                                    sentence.revealed = false;
+                                });
+                            });
                             saveData();
                             render();
                             alert('Data imported successfully!');
