@@ -491,6 +491,98 @@ input.gap-input.incorrect {
     display: none;
 }
 
+/* Card Game */
+.game-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.game-stats {
+    display: flex;
+    gap: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+.game-stats span {
+    background: #f0f4ff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border-left: 4px solid #667eea;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.card {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: 3px solid white;
+    border-radius: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    user-select: none;
+}
+
+.card:hover:not(.matched) {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+}
+
+.card:active {
+    transform: scale(0.98);
+}
+
+.card.flipped {
+    background: white;
+    color: #667eea;
+    border-color: #667eea;
+}
+
+.card.matched {
+    background: #52b788;
+    border-color: #40916c;
+    cursor: default;
+}
+
+.card.matched:hover {
+    transform: none;
+}
+
+.card-back {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+}
+
+.card-text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    padding: 10px;
+}
+
+.card-emoji {
+    font-size: 60px;
+    display: block;
+}
+
 /* Animations */
 @keyframes slideIn {
     from {
@@ -500,5 +592,25 @@ input.gap-input.incorrect {
     to {
         opacity: 1;
         transform: translateX(0);
+    }
+}
+
+@media (max-width: 600px) {
+    .game-board {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+    
+    .card {
+        border-radius: 12px;
+        font-size: 18px;
+    }
+    
+    .card-emoji {
+        font-size: 40px;
+    }
+    
+    .card-text {
+        font-size: 16px;
     }
 }

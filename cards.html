@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game - English Learning</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="nav-menu">
+        <a href="index.html" class="nav-btn">Home</a>
+        <a href="words.html" class="nav-btn">Words</a>
+        <a href="sentences.html" class="nav-btn">Sentences</a>
+        <a href="cards.html" class="nav-btn active">Card Game</a>
+    </div>
+
+    <div class="container">
+        <h1>🎮 Memory Card Game</h1>
+        <p class="subtitle">Match words with their images!</p>
+        
+        <div class="game-controls">
+            <button class="reset-btn" onclick="resetGame()">Reset Game</button>
+            <div class="game-stats">
+                <span>Matches: <strong id="matchCount">0</strong>/5</span>
+                <span>Moves: <strong id="moveCount">0</strong></span>
+            </div>
+        </div>
+
+        <div class="game-board" id="gameBoard"></div>
+
+        <div class="empty-state" id="winMessage" style="display: none;">
+            <p>🎉 Congratulations!</p>
+            <p style="font-size: 1.2em; margin-top: 10px;">You won in <span id="finalMoves">0</span> moves!</p>
+            <button onclick="resetGame()" style="margin-top: 20px;">Play Again</button>
+        </div>
+    </div>
+
+    <script src="cards.js"></script>
+</body>
+</html>
